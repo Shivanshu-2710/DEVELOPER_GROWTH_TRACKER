@@ -20,3 +20,5 @@ for row in records:
     print(f'Project Hours {row[3]}')
     print(f"Progress Date {row[4]}")
     print("-"*50,end='\n')
+
+db.close()

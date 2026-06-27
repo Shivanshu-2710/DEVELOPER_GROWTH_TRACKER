@@ -10,6 +10,13 @@ query='''select study_hours,
             git_commits,
             project_hours
             from daily_progress where user_id=%s'''
+def notfound(u_id):
+    cursor.execute("select user_id from daily_progress where user_id=%s",(u_id,))
+    record = cursor.fetchall()
+    if len(record)==0 :
+        return False
+        
+
 def total_analytics(u_id):
     sh=0
     dq=0
@@ -36,7 +43,16 @@ def weekly_analytics(u_id):
     dq=0
     gc=0
     ph=0
-    cursor.execute(query,(u_id,))
+    query1 = '''
+select study_hours,
+       dsa_questions,
+       git_commits,
+       project_hours
+from daily_progress
+where user_id=%s
+order by progress_date desc
+'''
+    cursor.execute(query1,(u_id,))
     records = cursor.fetchmany(7)
     for rows in records:
         sh+=rows[0]
@@ -55,14 +71,14 @@ print("HELLO ")
 print("CHOOSE FROM THE FOLLOWING OPTIONS ::")
 print('CHOICE 1 : TOTAL ANALYTICS ')
 print('CHOICE 2 : WEEKLY ANALYTICS ')
-print('CHOICE 3 : EXIT')
-choice=int(input("Enter Your Choice (1/2/3) :"))
+choice=int(input("Enter Your Choice (1/2) :"))
 u_id=int(input('Enter USER ID : '))
-if choice==1:
-    total_analytics(u_id)
-elif choice==2:
-    weekly_analytics(u_id)
-elif choice==3:
-    print("EXITED SUCCESFULLY")
+if notfound(u_id) is not False:
+    if choice==1:
+        total_analytics(u_id)
+    elif choice==2:
+        weekly_analytics(u_id)
+    else:
+        print('HAHA DUMB INVALID CHOICE ')
 else:
-    print('HAHA DUMB INVALID CHOICE ')
+    print('USER ID DOES NOT EXIST')

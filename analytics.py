@@ -1,4 +1,5 @@
 import mysql.connector as ms
+import datetime
 db=ms.connect(host='localhost',
               user='root',
               password='Shivanshu@mysql',
@@ -43,6 +44,8 @@ def weekly_analytics(u_id):
     dq=0
     gc=0
     ph=0
+    start_date=datetime.date.today()
+    date=start_date-datetime.timedelta(6)
     query1 = '''
 select study_hours,
        dsa_questions,
@@ -50,9 +53,10 @@ select study_hours,
        project_hours
 from daily_progress
 where user_id=%s
+and progress_date>=%s
 order by progress_date desc
 '''
-    cursor.execute(query1,(u_id,))
+    cursor.execute(query1,(u_id,date,))
     records = cursor.fetchmany(7)
     for rows in records:
         sh+=rows[0]

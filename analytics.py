@@ -11,11 +11,11 @@ query='''select study_hours,
             git_commits,
             project_hours
             from daily_progress where user_id=%s'''
-def notfound(u_id):
+def user_exists(u_id):
     cursor.execute("select user_id from daily_progress where user_id=%s",(u_id,))
     record = cursor.fetchall()
     if len(record)==0 :
-        return False
+        return False    
         
 
 def total_analytics(u_id):
@@ -40,12 +40,9 @@ def total_analytics(u_id):
     print("-"*50)
 
 def weekly_analytics(u_id):
-    sh=0
-    dq=0
-    gc=0
-    ph=0
-    start_date=datetime.date.today()
-    date=start_date-datetime.timedelta(6)
+    sh = dq = gc = ph = 0
+    today=datetime.date.today()
+    start_date=today-datetime.timedelta(6)
     query1 = '''
 select study_hours,
        dsa_questions,
@@ -56,8 +53,8 @@ where user_id=%s
 and progress_date>=%s
 order by progress_date desc
 '''
-    cursor.execute(query1,(u_id,date,))
-    records = cursor.fetchmany(7)
+    cursor.execute(query1,(u_id,start_date,))
+    records = cursor.fetchall()
     for rows in records:
         sh+=rows[0]
         dq+=rows[1]
@@ -77,7 +74,7 @@ print('CHOICE 1 : TOTAL ANALYTICS ')
 print('CHOICE 2 : WEEKLY ANALYTICS ')
 choice=int(input("Enter Your Choice (1/2) :"))
 u_id=int(input('Enter USER ID : '))
-if notfound(u_id) is not False:
+if user_exists(u_id) is not False:
     if choice==1:
         total_analytics(u_id)
     elif choice==2:

@@ -12,12 +12,10 @@ cursor.execute('''select user_id,
     git_commits,
     project_hours,
     progress_date from daily_progress where user_id like %s''',(u_id,))
-with open('growthtracker.csv','w',newline='') as f:
-        writer=csv.writer(f)
-        writer.writerow(['USER_ID','Study_Hours','Dsa_Questions','Git_Commits','Projecta_Hours','Progress_Date'])
 record=cursor.fetchone()
-while record is not None:
-    with open('growthtracker.csv','a',newline='') as f:
-        writer=csv.writer(f)
+with open('growthtracker.csv','w',newline='') as f:
+    writer=csv.writer(f)
+    writer.writerow(['USER_ID','Study_Hours','Dsa_Questions','Git_Commits','Project_Hours','Progress_Date'])
+    while record is not None:
         writer.writerow(record)
         record=cursor.fetchone()

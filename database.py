@@ -2,10 +2,13 @@ import mysql.connector as ms
 db=ms.connect(host='localhost',
               user='root',
               password='Shivanshu@mysql',
-              database='growth_tracker')
+                )
 cursor=db.cursor()
+cursor.execute('DROP DATABASE growth_tracker;')
+cursor.execute('CREATE DATABASE growth_tracker;')
+cursor.execute('USE growth_tracker;')
 cursor.execute('''
-CREATE TABLE daily_progress2 (
+CREATE TABLE daily_progress(
     id INT AUTO_INCREMENT,
     user_id INT,
     study_hours FLOAT,
@@ -17,7 +20,7 @@ CREATE TABLE daily_progress2 (
 );
 ''')
 cursor.execute('''
-CREATE TABLE users2(
+CREATE TABLE users(
     id INT AUTO_INCREMENT,
     user_id INT,
     user_name varchar(100),

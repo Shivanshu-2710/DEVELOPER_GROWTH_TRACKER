@@ -6,6 +6,15 @@ db=ms.connect(host='localhost',
               database='growth_tracker')
 cursor=db.cursor()
 
+def errhandle(func):
+    while True:
+        try:
+            func
+            break
+        except:
+            print("SOMETHING WENT WRONG HEHE !!")
+            continue
+
 query='''select study_hours,
             dsa_questions,
             git_commits,
@@ -72,14 +81,20 @@ print("HELLO ")
 print("CHOOSE FROM THE FOLLOWING OPTIONS ::")
 print('CHOICE 1 : TOTAL ANALYTICS ')
 print('CHOICE 2 : WEEKLY ANALYTICS ')
-choice=int(input("Enter Your Choice (1/2) :"))
-u_id=int(input('Enter USER ID : '))
-if user_exists(u_id) is not False:
-    if choice==1:
-        total_analytics(u_id)
-    elif choice==2:
-        weekly_analytics(u_id)
-    else:
-        print('HAHA DUMB INVALID CHOICE ')
-else:
-    print('USER ID DOES NOT EXIST')
+while True:
+    try:
+        choice=int(input("Enter Your Choice (1/2) :"))
+        u_id=int(input('Enter USER ID : '))
+        if user_exists(u_id) is not False:
+            if choice==1:
+                errhandle(total_analytics(u_id))
+            elif choice==2:
+                errhandle(weekly_analytics(u_id))
+            else:
+                print('HAHA DUMB INVALID CHOICE ')
+        else:
+            print('USER ID DOES NOT EXIST')
+        break
+    except:
+        print('SOMETHING WENT WRONG !!')
+        continue

@@ -5,7 +5,13 @@ db=ms.connect(host='localhost',
               password='Shivanshu@mysql',
               database='growth_tracker')
 cursor=db.cursor()
-u_id=int(input("Enter User Id"))
+while True:
+    try:
+        u_id=int(input("Enter User Id"))
+        break
+    except:
+        print("PLEASE ENTER VALID VALUES !! (ONLY INTEGERS ARE ALLOWED)")
+        continue
 cursor.execute('''select user_id,
     study_hours,
     dsa_questions,

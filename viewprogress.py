@@ -4,7 +4,13 @@ db=ms.connect(host='localhost',
               password='Shivanshu@mysql',
               database='growth_tracker')
 cursor=db.cursor()
-u_id=int(input("Enter USER ID : "))
+while True:
+    try:
+        u_id=int(input("Enter USER ID : "))
+        break
+    except:
+        print('PLEASE ENTER VALID VAULUE !! (ONLY INTEGERS ARE ALLOWED)')
+        continue
 query='''select study_hours,
         dsa_questions,
         git_commits,
